@@ -1,8 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { loadServerFiles } from "../utils/loadServerFiles";
+import { useEffect, useState } from "react";
 const About = () => {
   const navigate = useNavigate();
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    loadServerFiles().then(setFiles);
+  }, []);
   return (
     <div style={{ maxWidth: '700px', margin: '40px auto', padding: '24px', background: '#f9f9f9', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.07)' }}>
       <h1 style={{ color: '#2563eb', marginBottom: '16px' }}>About MediRural</h1>
@@ -52,6 +58,30 @@ const About = () => {
       >
         Go to Home
       </button>
+
+      <h1>Backend Code Backup</h1>
+
+      {files.map((file, index) => (
+        <div key={index} style={{ marginBottom: "30px" }}>
+          <h3>{file.path}</h3>
+
+          <pre style={{
+            background: "#111",
+            color: "#0f0",
+            padding: "15px",
+            overflowX: "auto",
+            borderRadius: "8px"
+          }}>
+            <code>{file.content}</code>
+          </pre>
+
+          <button
+            onClick={() => navigator.clipboard.writeText(file.content)}
+          >
+            Copy
+          </button>
+        </div>
+      ))}<br />
     </div>
   );
 };
