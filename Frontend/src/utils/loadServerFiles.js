@@ -1,17 +1,17 @@
-// Vite supports glob imports
-const files = import.meta.glob('../server/**/*.txt', { as: 'raw' });
+// NOTE: Capital "S" in Server
+const modules = import.meta.glob('/src/Server/**/*.txt', { as: 'raw' });
 
 export async function loadServerFiles() {
-  const result = [];
+  const files = [];
 
-  for (const path in files) {
-    const content = await files[path]();
+  for (const path in modules) {
+    const content = await modules[path]();
 
-    result.push({
-      path: path.replace('../server/', ''),
+    files.push({
+      path: path.replace('/src/Server/', ''),
       content
     });
   }
 
-  return result;
+  return files;
 }
